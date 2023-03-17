@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="426.0" prefWidth="600.0" stylesheets="@main-view.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar prefHeight="26.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Данные">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Сбросить всё" />
+                  <MenuItem mnemonicParsing="false" text="Сгенерировать" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Отчёт">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Работа кабинетов" />
+                  <MenuItem mnemonicParsing="false" text="Пациенты" />
+                  <MenuItem mnemonicParsing="false" text="Доктор" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Помощь">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <BorderPane prefHeight="60.0" prefWidth="600.0" stylesheets="@main-view.css">
+         <right>
+            <Button mnemonicParsing="false" onAction="#onClickAddPatient" style="-fx-background-color: #3A98B9; -fx-background-radius: 10;" stylesheets="@main-view.css" text="Добавить" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </Button>
+         </right>
+         <left>
+            <Label stylesheets="@main-view.css" text="Пациенты" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+         </left>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+         <center>
+            <Button mnemonicParsing="false" onAction="#onClickTreatment" opacity="0.0" style="-fx-background-color: #3A98B9; -fx-background-radius: 10;" text="Процедуры" textFill="WHITE" BorderPane.alignment="CENTER">
+            <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Button>
+         </center>
+      </BorderPane>
+      <ScrollPane maxHeight="-Infinity" prefWidth="600.0" stylesheets="@main-view.css" VBox.vgrow="ALWAYS">
+         <content>
+            <TableView id="TableView" fx:id="mainTable" prefHeight="336.0" prefWidth="595.0" stylesheets="@main-view.css">
+              <columns>
+                <TableColumn fx:id="columnFIO" prefWidth="200.0" text="ФИО" />
+                <TableColumn fx:id="columnDateBirthday" prefWidth="100.0" text="Дата Рождения" />
+                  <TableColumn fx:id="columnAddress" prefWidth="290.0" text="Адресс" />
+              </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+   </children>
+
+</VBox>
