@@ -1,6 +1,6 @@
 module Form {
-    requires javafx.controls;
-    requires javafx.fxml;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
     requires java.sql;
     requires javafaker;
 
@@ -9,9 +9,8 @@ module Form {
     requires org.kordamp.bootstrapfx.core;
     requires itextpdf;
 
-    opens GUI;
-    opens TableEntity;
-    opens Connection;
+    exports TableEntity;
+    exports Connection;
 
     exports GUI;
 }

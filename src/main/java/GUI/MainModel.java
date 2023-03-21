@@ -1,20 +1,25 @@
 package GUI;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.itextpdf.text.DocumentException;
+
 import Connection.DBConnection;
+import GenerateValue.GeneratorOfValues;
 import TableEntity.*;
+import Report.*;
 
 
 public class MainModel {
     int ptId;
+    String patientName;
     DBConnection connection;
     public StageWrapper data = new StageWrapper();
 
-    List<String> roomList = data.roomList;
     List<Patient> patientList = data.patientList;
     List<TreatmentWrapper> treatmentList = data.treatmentWrapperList;
-
+    List<TreatmentVisit> treatmentVisits = data.treatmentVisits;
     List<Doctor> doctorList = new ArrayList<>();
     List<TreatmentType> treatmentTypeList = new ArrayList<>();
 
@@ -28,28 +33,24 @@ public class MainModel {
         this.dataChangedListeners.add(listener);
     }
  
-    public void loadRoomList() {
-        String query = "use Treatment; Select Distinct txtTreatmentSetRoom from tblTreatmentSet;";
-        var tmp = connection.ex(query);
-        List<String> rmList = new ArrayList<String>();
-        tmp.forEach(item -> {
-            rmList.add((String) item.get("txtTreatmentSetRoom"));
-        });
-        
-        data.roomList.addAll(rmList);
-        emitDataChanged();
-    }
+
     public void loadPatient () {
         List<Patient> ptList = connection.getPatients();
+        patientList.clear();
         patientList.addAll(ptList);
         emitDataChanged();
     }
     public void loadDoctor() {
-        if (doctorList.size() == 0) {
-            doctorList = connection.getDoctor();
-        }
+        List<Doctor> dcList = connection.getDoctor();
+        doctorList.clear();
+        doctorList.addAll(dcList);
+        emitDataChanged();
     }
-    
+    public void loadTreatmentVisit() {
+        List<TreatmentVisit> visList = connection.getTreatmentVisit();
+        treatmentVisits.addAll(visList);
+        emitDataChanged();
+    }
     public void loadTreatmentType() {
         if (treatmentTypeList.size() == 0) {
             treatmentTypeList = connection.getTreatmentType();
@@ -72,6 +73,7 @@ public class MainModel {
                 new Doctor(connection.ex(queryDoctor).get(0)))
             );
         });
+        treatmentList.clear();
         treatmentList.addAll(trList);
         emitDataChanged();
     }
@@ -79,7 +81,9 @@ public class MainModel {
     public void addPatient(Patient patient) {
         System.out.println("add patient :" + patient.toString());
         connection.InsertValue("tblPatient", patient);
-        patientList = connection.getPatients();
+        List<Patient> pt = connection.getPatients();
+        patientList.clear();
+        patientList.addAll(pt);
         emitDataChanged();
     }
     // public void addTreatmentSet(TreatmentSet treatmentSet) {
@@ -98,4 +102,60 @@ public class MainModel {
             listener.dataChanged(data);
         }
     }
+
+    public void createReportRoom() throws FileNotFoundException, DocumentException {
+        System.out.println("query for report room:");
+        connection.isLog = true;
+        ReportRoom.make(connection);
+        connection.isLog = false;
+        try{
+            // Runtime.getRuntime().exec("pwd");
+            Runtime.getRuntime().exec("powershell .\\ReportRoom.pdf");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void createReportPatient() throws FileNotFoundException, DocumentException {
+        System.out.println("query for report patient:");
+        connection.isLog = true;
+        ReportPatient.make(connection);
+        connection.isLog = false;
+        try{
+            // Runtime.getRuntime().exec("pwd");
+            Runtime.getRuntime().exec("powershell .\\ReportPatient.pdf");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void createReportDoctor() throws FileNotFoundException, DocumentException {
+        ReportDoctor.make(connection);
+    }
+    public void loadAll() {
+        loadPatient();
+        loadDoctor();
+        loadTreatmentType();
+        loadTreatmentVisit();
+        loadTreatment();
+
+    }
+
+    public void DropAll() {
+        connection.DropTableAll();
+        
+        loadAll();
+
+        emitDataChanged();
+    }
+    public void GenAll() {
+        connection.InsertValue("tblPatient", GeneratorOfValues.getPatient(10));
+        connection.InsertValue("tblDoctor", GeneratorOfValues.getDoctor(10));
+        connection.InsertValue("tblTreatmentType", GeneratorOfValues.getTreatmentType(10));
+        connection.InsertValue("tblTreatmentSet", GeneratorOfValues.getTreatmentSet(30, connection.getDoctor(), connection.getPatients(), connection.getTreatmentType()));
+        connection.InsertValue("tblTreatmentVisit", GeneratorOfValues.getTreatmentVisit(30, connection.getTreatmentSet()));
+        
+        loadAll();
+        emitDataChanged();
+
+    }
+
 }

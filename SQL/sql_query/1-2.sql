@@ -1,5 +1,6 @@
 USE master
-GO;
+GO
+drop database Treatment;
 
 IF NOT EXISTS (
    SELECT name
@@ -7,7 +8,7 @@ IF NOT EXISTS (
    WHERE name = N'Treatment'
 )
 CREATE DATABASE [Treatment]
-GO;
+GO
 
 USE Treatment
 
@@ -18,13 +19,13 @@ if not exists (select *
 )
 create table tblPatient (
 intPatientId int primary key identity(1,1),
-txtPatientSurname varchar(30) not null,
-txtPatientName varchar(25) not null,
-txtPatientSecondName varchar(30) not null,
+txtPatientSurname nvarchar(30) not null,
+txtPatientName nvarchar(25) not null,
+txtPatientSecondName nvarchar(30) not null,
 datBirthday date not null,
-txtAddress varchar(100) not null
+txtAddress nvarchar(100) not null
 )
-GO;
+GO
 
 if not exists (select * 
                  FROM INFORMATION_SCHEMA.TABLES 
@@ -33,11 +34,11 @@ if not exists (select *
 )
 create table tblDoctor (
 intDoctorId int primary key identity(1,1),
-txtDoctorName varchar(150) not null,
-txtSpecialist varchar(35) not null,
+txtDoctorName nvarchar(150) not null,
+txtSpecialist nvarchar(35) not null,
 datDoctorWork date not null
 )
-GO;
+GO
 
 if not exists (select * 
                  FROM INFORMATION_SCHEMA.TABLES 
@@ -46,11 +47,11 @@ if not exists (select *
 )
 create table tblTreatmentType (
 intTreatmentTypeId int primary key identity(1,1),
-txtTreatmentTypeName varchar(100) not null,
-txtTreatmentTypeDescription varchar(255) not null,
+txtTreatmentTypeName nvarchar(100) not null,
+txtTreatmentTypeDescription nvarchar(255) not null,
 fltTreatmentPrice decimal not null
 )
-GO;
+GO
  
 if not exists (select * 
                  FROM INFORMATION_SCHEMA.TABLES 
@@ -71,7 +72,7 @@ intTreatmentSetCountFact int not null,
 intTreatmentTypeId int not null,
 foreign key (intTreatmentTypeId) references tblTreatmentType (intTreatmentTypeId) on update cascade on delete no action
 )
-GO;
+GO
 
 if not exists (select * 
                  FROM INFORMATION_SCHEMA.TABLES 
@@ -84,4 +85,4 @@ intTreatmentSetId int not null,
 foreign key (intTreatmentSetId) references tblTreatmentSet(intTreatmentSetId) on update cascade on delete no action,
 datTreatmentVisitDate date not null
 )
-GO;
+GO

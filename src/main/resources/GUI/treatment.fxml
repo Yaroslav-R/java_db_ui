@@ -27,7 +27,7 @@
             </Button>
          </right>
          <left>
-            <Label stylesheets="@main-view.css" text="Процедуры" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <Label fx:id="labelPatients" stylesheets="@main-view.css" text="Процедуры" textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold Italic" size="24.0" />
                </font>

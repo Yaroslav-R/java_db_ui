@@ -4,4 +4,4 @@
 
 
 use Treatment;
-Select Distinct txtTreatmentSetRoom from tblTreatmentSet;
+select * from tblPatient;

@@ -1,6 +1,7 @@
 package TableEntity;
 
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -130,12 +131,15 @@ public class Patient {
     }
 
     public String toString() {
-        return String.format("'%s', '%s', '%s', '%s', '%s'",
-                getTxtPatientSurname(),
-                getTxtPatientName(),
-                getTxtPatientSecondName(),
-                getDateBirthday(),
-                getTxtAddress());
+
+
+        return String.format("N'%s', N'%s', N'%s', '%s', N'%s'",
+                    getTxtPatientSurname(),
+                    getTxtPatientName(),
+                    getTxtPatientSecondName(),
+                    getDateBirthday(),
+                    getTxtAddress());
+        
     }
 
     public String toString(int withId) {

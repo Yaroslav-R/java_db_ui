@@ -1,12 +1,10 @@
 package GUI;
 
-import Report.ReportRoom;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.itextpdf.text.DocumentException;
@@ -21,6 +19,12 @@ public class Main extends Application {
         HelloController controller = new HelloController();
         MainModel mainModel = new MainModel();
         mainModel.connection = new DBConnection();
+        mainModel.loadDoctor();
+        mainModel.loadPatient();
+        mainModel.loadTreatmentType();
+        mainModel.loadTreatment();
+        mainModel.loadTreatmentVisit();
+
         controller.mainModel = mainModel;
 
         fxmlLoader.setController(controller);
@@ -34,8 +38,11 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws DocumentException, IOException {
-//        launch();
-        ReportRoom.make();
-        Runtime.getRuntime().exec(new String[] {".\\PositionPdf.pdf"});
+       launch(); 
+        // DBConnection connection = new DBConnection();
+        // Patient pt = connection.getPatients().get(0);
+        // String name = pt.getTxtPatientName();
+        
+        // System.out.println(GeneratorOfValues.getName());
     }
 }

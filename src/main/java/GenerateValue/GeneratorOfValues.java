@@ -4,6 +4,7 @@ package GenerateValue;
 import TableEntity.*;
 import com.github.javafaker.Faker;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -35,15 +36,21 @@ public class GeneratorOfValues {
     private static final Faker faker = new Faker(new Locale("ru"));
 
     public static String getName() {
-        if (Math.abs(rn.nextInt()) % 2 == 0) {
-            return male_first_name[Math.abs(rn.nextInt()) % male_first_name.length] + " " +
-                    male_last_name[Math.abs(rn.nextInt()) % male_last_name.length] + " " +
-                    male_middle_name[Math.abs(rn.nextInt()) % male_middle_name.length];
+        boolean cur = Math.abs(rn.nextInt()) % 2 == 0;
+        // boolean cur = true;
+        String first_name = "";
+        String last_name = "";
+        String middle_name = "";
+        if (cur) {
+            first_name =male_first_name[Math.abs(rn.nextInt()) % male_first_name.length];
+            last_name = male_last_name[Math.abs(rn.nextInt()) % male_last_name.length];
+            middle_name = male_middle_name[Math.abs(rn.nextInt()) % male_middle_name.length];
         } else {
-            return female_first_name[Math.abs(rn.nextInt()) % female_first_name.length] + " " +
-                    female_last_name[Math.abs(rn.nextInt()) % female_last_name.length] + " " +
-                    female_middle_name[Math.abs(rn.nextInt()) % female_middle_name.length];
+            first_name = female_first_name[Math.abs(rn.nextInt()) % female_first_name.length];
+            last_name = female_last_name[Math.abs(rn.nextInt()) % female_last_name.length];
+            middle_name = female_middle_name[Math.abs(rn.nextInt()) % female_middle_name.length];
         }
+        return first_name + " " + last_name + " " + middle_name;
     }
     public static Patient getPatient() {
         String fullname = getName();

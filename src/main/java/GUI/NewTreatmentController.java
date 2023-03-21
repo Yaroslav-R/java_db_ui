@@ -4,7 +4,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,10 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
@@ -46,11 +42,11 @@ public class NewTreatmentController implements Initializable {
     @FXML
     public DatePicker dateEnd;
     @FXML
-    public ChoiceBox choiceName;
+    public ChoiceBox<String> choiceName;
     @FXML 
-    public ChoiceBox choiceDoctor;
+    public ChoiceBox<String> choiceDoctor;
     @FXML
-    public ChoiceBox room;
+    public ChoiceBox<String> room;
     @FXML
     public TextField cntTreatment;
     
@@ -76,8 +72,8 @@ public class NewTreatmentController implements Initializable {
         });
 
         List<String> tmp = new ArrayList<String>();
-        mainModel.roomList.forEach(item -> {
-            tmp.add(item);
+        mainModel.treatmentList.forEach(item -> {
+            tmp.add(item.getTreatmentSet().getTxtTreatmentSetRoom());
         });
         List<String> strRoomList = new ArrayList<String>(tmp.subList(0, Math.min(tmp.size(), 10))); 
 
@@ -96,7 +92,7 @@ public class NewTreatmentController implements Initializable {
         ((Stage)((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 
-    public void onClickSave() {
+    public void onClickSave(ActionEvent actionEvent) {
         int indexTreatmentName = choiceName.getSelectionModel().getSelectedIndex();
         TreatmentType treatmentType = mainModel.treatmentTypeList.get(indexTreatmentName);
         int indexDoctorName = choiceDoctor.getSelectionModel().getSelectedIndex();
@@ -132,6 +128,7 @@ public class NewTreatmentController implements Initializable {
             );
         TreatmentWrapper treatmentWrapper = new TreatmentWrapper(treatmentSet, treatmentType, doctor);
         mainModel.addTreatmentWrapper(treatmentWrapper);
+        ((Stage)((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 
 }

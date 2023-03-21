@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class DBConnection {
     private Connection connection;
+    public boolean isLog = false;
     private Statement statement;
     private String pre;
     public void setPre(String pre) {
@@ -19,16 +21,26 @@ public class DBConnection {
 
     public DBConnection() {
         this.setPre("use Treatment;");
+        Properties p = new Properties();
         try {
-            String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=Treatment;user=sa;password=admin";
-            connection = DriverManager.getConnection(connectionUrl);
+            p.setProperty("user", "sa");
+            p.setProperty("password", "admin");
+            p.setProperty("useUnicode","true");
+            p.setProperty("characterEncoding","UTF-8");
+            p.setProperty("CharacterSet", "UTF-8");
+            String connectionUrl = "jdbc:sqlserver://localhost:1433";
+            connection = DriverManager.getConnection(connectionUrl, p);
             statement = connection.createStatement();
         } catch (SQLException e) {
             connection = null;
             System.err.println(e.getMessage());
         }
+        
     }
     public List<Map<String, Object>> ex(String query)  {
+        if (isLog == true) {
+            System.out.println(query);
+        }
         try {
             if (!connection.isValid(1)) {
                 throw new RuntimeException();
@@ -56,6 +68,8 @@ public class DBConnection {
         }
     }
     public void DropTableAll() {
+        ex("delete from tblTreatmentVisit");
+        ex("delete from tblTreatmentSet");
         ex("delete from tblPatient");
         ex("delete from tblDoctor");
         ex("delete from tblTreatmentType");

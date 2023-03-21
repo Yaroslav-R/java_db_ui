@@ -1,12 +1,14 @@
 package GUI;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.itextpdf.text.DocumentException;
+
 import TableEntity.Patient;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +26,7 @@ import javafx.stage.Modality;
 // import javafx.scene.layout.*;
 // import javafx.stage.Stage;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
 
 // import java.util.List;
 
@@ -37,6 +40,8 @@ public class HelloController implements Initializable {
     public TableColumn <Patient, String> columnDateBirthday;
     @FXML
     public TableColumn <Patient, String> columnAddress;
+
+    public javafx.collections.ObservableList<Patient> list = FXCollections.observableArrayList();
     
     public MainModel mainModel;
     
@@ -46,15 +51,22 @@ public class HelloController implements Initializable {
         columnDateBirthday.setCellValueFactory(new PropertyValueFactory<Patient,String>("dateBirthday"));
         columnAddress.setCellValueFactory(new PropertyValueFactory<Patient,String>("txtAddress"));
 
-        
+        mainTable.setItems(list);
 
         mainModel.addDataChangedListener(data -> {
-            mainTable.setItems(FXCollections.observableArrayList(data.patientList));
+            // System.out.println("UPDATE DATA");
+            // System.out.println(data.patientList);
+            list.clear();
+            
+            // list.forEach(item -> System.out.println(item));
+            // System.out.println("add;");
+            list.addAll(data.patientList);
+            
+            // list.forEach(item -> System.out.println(item));
+            mainTable.setItems(list);
         });
 
-        mainModel.loadPatient();
-        mainModel.loadDoctor();
-        mainModel.loadTreatmentType();
+        mainModel.loadAll();
 
 
         mainTable.setRowFactory( tv -> {
@@ -95,12 +107,14 @@ public class HelloController implements Initializable {
     }
 
     public void onClickTreatment() throws IOException {
-        int pt = ((Patient) this.mainTable.getSelectionModel().getSelectedItem()).getIntPatientId();
+        Patient patient = (Patient) this.mainTable.getSelectionModel().getSelectedItem();
+        int pt = patient.getIntPatientId();
         System.out.println("load treatment of " + pt);
         FXMLLoader loader = new FXMLLoader();
         // mainModel.loadTreatment(pt);
         TreatmentController controller = new TreatmentController();
         mainModel.ptId = pt;
+        mainModel.patientName = patient.getTxtFIO();
         controller.mainModel = mainModel;
         loader.setController(controller);
         loader.setLocation(getClass().getResource("treatment.fxml"));
@@ -114,6 +128,28 @@ public class HelloController implements Initializable {
         stage.initOwner(this.mainTable.getScene().getWindow());
 
         stage.showAndWait();
+    }
+
+    public void onClickDropAll() {
+        System.out.println("click on Drop All");
+        mainModel.DropAll();
+    }
+    public void onClickGenAll() {
+        System.out.println("click on gen All");
+        mainModel.GenAll();
+    }
+
+    public void onClickGenReportRoom() throws FileNotFoundException, DocumentException {
+        System.out.println("Start generating report room");
+        mainModel.createReportRoom();
+    }
+    public void onClickGenReportPt() throws FileNotFoundException, DocumentException {
+        System.out.println("Start generation report of Patients");
+        mainModel.createReportPatient();
+    }
+    public void onClickGenReportDc() {
+        System.out.println("Start generation report of Doctors");
+        // mainModel.createReportDoctor();
     }
 
 }

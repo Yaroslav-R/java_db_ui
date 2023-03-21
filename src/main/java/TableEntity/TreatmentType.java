@@ -66,7 +66,7 @@ public class TreatmentType {
     }
 
     public String toString() {
-        return String.format("'%s', '%s', '%s'",
+        return String.format("N'%s', N'%s', N'%s'",
                 getTxtTreatmentTypeName(),
                 getTxtTreatmentTypeDescription(),
                 getFltTreatmentPrice().toString());

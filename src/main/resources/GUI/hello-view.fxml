@@ -19,15 +19,15 @@
          <menus>
             <Menu mnemonicParsing="false" text="Данные">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Сбросить всё" />
-                  <MenuItem mnemonicParsing="false" text="Сгенерировать" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickDropAll" text="Сбросить всё" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickGenAll" text="Сгенерировать" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Отчёт">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Работа кабинетов" />
-                  <MenuItem mnemonicParsing="false" text="Пациенты" />
-                  <MenuItem mnemonicParsing="false" text="Доктор" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickGenReportRoom" text="Работа кабинетов" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickGenReportPt" text="Пациенты" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickGenReportDc" text="Доктор" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Помощь">

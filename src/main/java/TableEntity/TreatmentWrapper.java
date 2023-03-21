@@ -1,7 +1,5 @@
 package TableEntity;
 
-import Connection.DBConnection;
-
 public class TreatmentWrapper {
     private TreatmentSet treatmentSet;
     private TreatmentType treatmentType;

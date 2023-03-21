@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,7 +24,9 @@ import javafx.scene.Node;
 
 public class TreatmentController implements Initializable{
     @FXML
-    public TableView mainTable;
+    public TableView<TreatmentWrapper> mainTable;
+    @FXML
+    public Label labelPatients;
     @FXML
     public Button closeBtn;
     @FXML
@@ -51,10 +54,11 @@ public class TreatmentController implements Initializable{
         doctorFIO.setCellValueFactory(new PropertyValueFactory<TreatmentWrapper, String>("doctorFIO"));
         System.out.println("list of ptid : " + mainModel.ptId);
 
+        labelPatients.setText(mainModel.patientName);
+        
         mainModel.addDataChangedListener(data -> {
             mainTable.setItems(FXCollections.observableArrayList(data.treatmentWrapperList));
         });
-        mainModel.loadRoomList();
         mainModel.loadTreatment();
     }
     public void onClickClose(ActionEvent actionEvent) {
